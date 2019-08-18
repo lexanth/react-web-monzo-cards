@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import styled from 'styled-components/macro'
+import { CARDS } from './constants'
+import CardDisplay from './CardDisplay'
+import CardSelector from './CardSelector'
+
+const AppContainer = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
+const Header = styled.header`
+  background-color: black;
+  flex: 0 0 40px;
+`
+const Content = styled.main`
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f6f3;
+`
+const Footer = styled.footer`
+  background-color: black;
+  flex: 0 0 40px;
+`
 
 function App() {
+  const cards = CARDS
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <AppContainer>
+      <Header />
+      <Content>
+        <CardDisplay cards={cards} />
+        <CardSelector cards={cards} />
+      </Content>
+      <Footer />
+    </AppContainer>
+  )
 }
 
-export default App;
+export default App
