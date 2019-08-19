@@ -27,7 +27,17 @@ const unselectedCardAnimation = (index, selectedCardIndex) => ({
   transformOrigin: '50% 50%',
 })
 
+const selectedCardShuffle = () => [
+  {
+    transform: 'rotateZ(45deg)',
+    transformOrigin: '180% 50%',
+    zIndex: maxZ++,
+  },
+  { transform: 'rotateZ(0deg)' },
+]
+
 let maxZ = 1
+let isFirstSelection = true
 
 const CardDisplay = ({ cards, selectedCardIndex }) => {
   const items = useTransition(cards, card => card.colour, {
@@ -40,15 +50,18 @@ const CardDisplay = ({ cards, selectedCardIndex }) => {
       const index = cards.indexOf(card)
       if (selectedCardIndex === INITIAL_SELECTION) {
         return fanOutAnimation(index)
+      } else if (isFirstSelection) {
+        isFirstSelection = false
+        const returnToBase = {
+          transformOrigin: '50% 50%',
+          transform: `rotateZ(${(index - 1) * 7.5}deg)`,
+        }
+        if (selectedCardIndex === index) {
+          return [returnToBase, ...selectedCardShuffle()]
+        }
+        return [returnToBase, unselectedCardAnimation(index, selectedCardIndex)]
       } else if (selectedCardIndex === index) {
-        return [
-          {
-            transform: 'rotateZ(45deg)',
-            transformOrigin: '180% 50%',
-            zIndex: maxZ++,
-          },
-          { transform: 'rotateZ(0deg)' },
-        ]
+        return selectedCardShuffle()
       }
       return unselectedCardAnimation(index, selectedCardIndex)
     },
