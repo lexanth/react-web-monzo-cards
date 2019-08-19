@@ -32,7 +32,7 @@ function App() {
     <AppContainer>
       <Header />
       <Content>
-        <CardDisplay cards={cards} />
+        <CardDisplay cards={cards} selectedCardIndex={selectedCardIndex} />
         <CardSelector
           cards={cards}
           selectedCardIndex={selectedCardIndex}
