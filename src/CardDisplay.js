@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components/macro'
 import { useTransition, animated, config } from 'react-spring'
 import Card from './Card'
@@ -27,19 +27,19 @@ const unselectedCardAnimation = (index, selectedCardIndex) => ({
   transformOrigin: '50% 50%',
 })
 
-const selectedCardShuffle = () => [
+const selectedCardShuffle = maxZ => [
   {
     transform: 'rotateZ(45deg)',
     transformOrigin: '180% 50%',
-    zIndex: maxZ++,
+    zIndex: maxZ.current++,
   },
   { transform: 'rotateZ(0deg)' },
 ]
 
-let maxZ = 1
-let isFirstSelection = true
-
 const CardDisplay = ({ cards, selectedCardIndex }) => {
+  const isFirstSelection = useRef(true)
+  const maxZ = useRef(1)
+
   const items = useTransition(cards, card => card.colour, {
     from: { transform: 'rotateZ(0deg)', zIndex: 0 },
     enter: card => {
@@ -50,18 +50,18 @@ const CardDisplay = ({ cards, selectedCardIndex }) => {
       const index = cards.indexOf(card)
       if (selectedCardIndex === INITIAL_SELECTION) {
         return fanOutAnimation(index)
-      } else if (isFirstSelection) {
-        isFirstSelection = false
+      } else if (isFirstSelection.current) {
+        isFirstSelection.current = false
         const returnToBase = {
           transformOrigin: '50% 50%',
           transform: `rotateZ(${(index - 1) * 7.5}deg)`,
         }
         if (selectedCardIndex === index) {
-          return [returnToBase, ...selectedCardShuffle()]
+          return [returnToBase, ...selectedCardShuffle(maxZ)]
         }
         return [returnToBase, unselectedCardAnimation(index, selectedCardIndex)]
       } else if (selectedCardIndex === index) {
-        return selectedCardShuffle()
+        return selectedCardShuffle(maxZ)
       }
       return unselectedCardAnimation(index, selectedCardIndex)
     },
