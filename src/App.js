@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/macro'
-import { CARDS } from './constants'
+import { CARDS, INITIAL_SELECTION } from './constants'
 import CardDisplay from './CardDisplay'
 import CardSelector from './CardSelector'
 
@@ -27,12 +27,17 @@ const Footer = styled.footer`
 
 function App() {
   const cards = CARDS
+  const [selectedCardIndex, setCardIndex] = useState(INITIAL_SELECTION)
   return (
     <AppContainer>
       <Header />
       <Content>
         <CardDisplay cards={cards} />
-        <CardSelector cards={cards} />
+        <CardSelector
+          cards={cards}
+          selectedCardIndex={selectedCardIndex}
+          setCardIndex={setCardIndex}
+        />
       </Content>
       <Footer />
     </AppContainer>

@@ -8,11 +8,17 @@ const CardOptionList = styled.div`
   z-index: 1;
 `
 
-const CardSelector = ({ cards }) => {
+const CardSelector = ({ cards, selectedCardIndex, setCardIndex }) => {
   return (
     <CardOptionList>
-      {cards.map(card => (
-        <CardOption key={card.colour} card={card} />
+      {cards.map((card, index) => (
+        <CardOption
+          key={card.colour}
+          card={card}
+          selectedCardIndex={selectedCardIndex}
+          setCardIndex={setCardIndex}
+          index={index}
+        />
       ))}
     </CardOptionList>
   )
