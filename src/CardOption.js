@@ -27,7 +27,7 @@ const OptionText = styled.div`
 
 const CardOption = ({ card }) => {
   return (
-    <CardOptionContainer key={card.colour}>
+    <CardOptionContainer>
       <CardSwatch colour={card.colour} />
       <OptionText>{card.name}</OptionText>
       <Checkbox />
